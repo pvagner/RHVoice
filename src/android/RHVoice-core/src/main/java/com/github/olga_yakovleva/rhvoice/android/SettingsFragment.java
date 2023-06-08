@@ -60,8 +60,10 @@ public final class SettingsFragment extends PreferenceFragmentCompat implements 
 
 
     private void buildLanguagePreferenceCategory(PreferenceCategory cat0, LanguagePack lp, List<VoicePack> voices) {
-        Context ctx = getPreferenceManager().getContext();
-        PreferenceScreen cat = getPreferenceManager().createPreferenceScreen(ctx);
+        Context ctx = MyApplication.getStorageContext();
+        PreferenceManager preferenceManager = getPreferenceManager();
+        preferenceManager.setStorageDeviceProtected();
+        PreferenceScreen cat = preferenceManager.createPreferenceScreen(ctx);
         cat.setPersistent(false);
         String firstVoiceName = voices.get(0).getName();
         String code3 = lp.getCode();
@@ -143,7 +145,7 @@ public final class SettingsFragment extends PreferenceFragmentCompat implements 
             if (voices.isEmpty())
                 continue;
             if (cat == null) {
-                cat = new PreferenceCategory(getPreferenceManager().getContext());
+                cat = new PreferenceCategory(MyApplication.getStorageContext());
                 cat.setOrder(100);
                 cat.setKey("languages");
                 cat.setTitle(R.string.languages);
@@ -171,13 +173,13 @@ public final class SettingsFragment extends PreferenceFragmentCompat implements 
     @Override
     public void onResume() {
         super.onResume();
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(this);
+        PreferenceManager.getDefaultSharedPreferences(MyApplication.getStorageContext()).registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(this);
+        PreferenceManager.getDefaultSharedPreferences(MyApplication.getStorageContext()).unregisterOnSharedPreferenceChangeListener(this);
     }
 
     private void onUserDictSelected(Uri uri) {
