@@ -141,7 +141,7 @@ public final class SettingsFragment extends PreferenceFragmentCompat implements 
         PreferenceCategory cat = null;
         final DataManager dm = Repository.get().createDataManager();
         for (LanguagePack lp : dm.iterLanguages()) {
-            final List<VoicePack> voices = lp.iterVoices().filter(v -> v.getEnabled(requireContext()) && v.isInstalled(requireContext())).toList();
+            final List<VoicePack> voices = lp.iterVoices().filter(v -> v.getEnabled(MyApplication.getStorageContext()) && v.isInstalled(MyApplication.getStorageContext())).toList();
             if (voices.isEmpty())
                 continue;
             if (cat == null) {
