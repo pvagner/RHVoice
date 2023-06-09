@@ -76,12 +76,12 @@ public final class VoiceListAdapter extends RecyclerView.Adapter<VoiceViewHolder
     }
 
     private String getVersionString(VoicePack voice) {
-        if (!voice.getEnabled(activity))
+        if (!voice.getEnabled(MyApplication.getStorageContext()))
             return null;
-        final Version ver = voice.getInstalledVersion(activity);
+        final Version ver = voice.getInstalledVersion(MyApplication.getStorageContext());
         if (ver == null)
             return null;
-        final Version langVer = voice.getLanguage().getInstalledVersion(activity);
+        final Version langVer = voice.getLanguage().getInstalledVersion(MyApplication.getStorageContext());
         if (langVer == null)
             return ver.toString();
         return (ver.toString() + "." + langVer.toString());
