@@ -130,6 +130,8 @@ public final class SettingsFragment extends PreferenceFragmentCompat implements 
 
     @Override
     public void onCreatePreferences(Bundle state, String rootKey) {
+        PreferenceManager preferenceManager = getPreferenceManager();
+        preferenceManager.setStorageDeviceProtected();
         setPreferencesFromResource(R.xml.settings, null);
         findPreference("version").setSummary(BuildConfig.VERSION_NAME);
         if (openConfigFile != null) {
@@ -167,7 +169,7 @@ public final class SettingsFragment extends PreferenceFragmentCompat implements 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         if ("wifi_only".equals(key))
-            Repository.get().createDataManager().scheduleSync(requireActivity(), true);
+            Repository.get().createDataManager().scheduleSync(MyApplication.getStorageContext(), true);
     }
 
     @Override
@@ -234,7 +236,7 @@ public final class SettingsFragment extends PreferenceFragmentCompat implements 
             openConfigFile.launch(new String[]{"*/*"});
             return false;
         } else {
-            Config.getConfigFile(requireActivity()).delete();
+            Config.getConfigFile(MyApplication.getStorageContext()).delete();
             LocalBroadcastManager.getInstance(requireActivity()).sendBroadcast(new Intent(RHVoiceService.ACTION_CONFIG_CHANGE));
             return true;
         }
